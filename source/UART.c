@@ -38,12 +38,79 @@ void sendChar(uint8_t data){
 		UART0->D = data;
 }
 
-void sendString(uint8_t *string){
+void sendString(uint8_t* string){
 	while(*string){
 		sendChar(*string);
 		string++;
 	}
 }
 
+void return_default(){
+	static uint8_t flag = 0;
+	if(!flag){
+		sendString("0x02 0xff 0x01 0xff 0x03");
+		flag = 1;
+	}
+}
 
+uint8_t check_length(uint8_t data){
+	uint8_t check = 0;
+	if(data < 15){
+		check++;
+	}
+	return check;
+}
+
+void check_id_bit(uint32_t* data){
+	switch(data[id_bit]){
+	case '0':
+		configPWM_0();
+		break;
+	case '1':
+		configPWM_30();
+		break;
+	case '2':
+		configPWM_60();
+		break;
+	case '3':
+		configPWM_90();
+		break;
+	default:
+		return_default();
+		break;
+	}
+}
+
+uint8_t check_buff_0(uint32_t *data, uint8_t length){
+	uint8_t i = 0;
+	uint8_t count = 0;
+	for(i = 0; i < length; i++){
+		if(i % 3 == 0){
+			if(data[i] == '0'){
+				//check START
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
+uint8_t check_start_bit(uint32_t *data){
+	uint8_t count = 0;
+	if(data[start_bit] == '2' && data[stop_bit] == '3' && data[length_bit] == '1'){
+		count = 1;
+	}
+	return count;
+}
+
+uint8_t check_mode(uint32_t* data){
+	uint8_t count = 0;
+		if(data[mode_bit] == '1'){
+			count = 1;
+		}
+		else if(data[mode_bit] == '2'){
+			count = 2;
+		}
+		return count;
+}
 

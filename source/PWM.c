@@ -19,19 +19,19 @@ void configPWM(){
 	TPM0->CONTROLS[5].CnSC |= (1 << 5) | (1 << 3);
 }
 
-void configPWM_0(){
-		TPM0->CONTROLS[5].CnV = 0;
-}
-
-void configPWM_30(){
-		TPM0->CONTROLS[5].CnV = 19660;
+void configPWM_90(){
+		TPM0->CONTROLS[5].CnV = 6553;
 }
 
 void configPWM_60(){
-		TPM0->CONTROLS[5].CnV = 39321;
+		TPM0->CONTROLS[5].CnV = 26214;
 }
 
-void configPWM_90(){
-		TPM0->CONTROLS[5].CnV = 58981;
+void configPWM_30(){
+		TPM0->CONTROLS[5].CnV = 45874;
+}
+
+void configPWM_0(){
+		TPM0->CONTROLS[5].CnV = 65535;
 }
 

@@ -1,4 +1,4 @@
 E:\Projects\MK46z_MCU\Fan_control\CMSIS/core_cm0plus.h:733:22:__NVIC_EnableIRQ	16	static
 E:\Projects\MK46z_MCU\Fan_control\CMSIS/core_cm0plus.h:822:22:__NVIC_ClearPendingIRQ	16	static
 ../source/delay.c:4:6:sys_Timer	16	static
-../source/delay.c:16:6:delay_ms	16	static
+../source/delay.c:15:6:delay_ms	16	static

@@ -3,3 +3,9 @@ E:\Projects\MK46z_MCU\Fan_control\CMSIS/core_cm0plus.h:822:22:__NVIC_ClearPendin
 ../source/UART.c:4:6:configUART	16	static
 ../source/UART.c:36:6:sendChar	16	static
 ../source/UART.c:41:6:sendString	16	static
+../source/UART.c:48:6:return_default	8	static
+../source/UART.c:56:9:check_length	24	static
+../source/UART.c:64:6:check_id_bit	16	static
+../source/UART.c:84:9:check_buff_0	32	static
+../source/UART.c:98:9:check_start_bit	24	static
+../source/UART.c:106:9:check_mode	24	static

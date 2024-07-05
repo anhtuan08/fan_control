@@ -8,7 +8,7 @@ extern int msTick;
 
 void sys_Timer();
 
-void delay_ms();
+//void delay_ms();
 
 
 

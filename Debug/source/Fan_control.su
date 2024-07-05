@@ -1,4 +1,8 @@
-../source/Fan_control.c:50:6:PORTC_PORTD_IRQHandler	8	static
-../source/Fan_control.c:56:6:SysTick_Handler	8	static
-../source/Fan_control.c:60:6:UART0_IRQHandler	8	static
-../source/Fan_control.c:69:5:main	8	static
+../source/Fan_control.c:94:6:PORTC_PORTD_IRQHandler	8	static
+../source/Fan_control.c:100:6:SysTick_Handler	8	static
+../source/Fan_control.c:105:6:UART0_IRQHandler	8	static
+../source/Fan_control.c:113:6:Button_mode	8	static
+../source/Fan_control.c:124:6:reset_buff	16	static
+../source/Fan_control.c:130:6:switch_mode	8	static
+../source/Fan_control.c:143:6:uart_mode	8	static
+../source/Fan_control.c:163:5:main	8	static

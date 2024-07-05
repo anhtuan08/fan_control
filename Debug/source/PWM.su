@@ -1,5 +1,5 @@
 ../source/PWM.c:3:6:configPWM	8	static
-../source/PWM.c:22:6:configPWM_0	8	static
-../source/PWM.c:26:6:configPWM_30	8	static
-../source/PWM.c:30:6:configPWM_60	8	static
-../source/PWM.c:34:6:configPWM_90	8	static
+../source/PWM.c:22:6:configPWM_90	8	static
+../source/PWM.c:26:6:configPWM_60	8	static
+../source/PWM.c:30:6:configPWM_30	8	static
+../source/PWM.c:34:6:configPWM_0	8	static

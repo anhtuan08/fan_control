@@ -23,7 +23,7 @@ Example:
 
 
 Lưu ý:
-*Khi gửi một chuỗi sai về ID hoặc lỗi không xác định sẽ luôn luôn gửi về là 0x02 0xff 0x01 0xff 0x03
+*Khi gửi một chuỗi sai về ID hoặc lỗi không xác định sẽ luôn luôn gửi về là 0x02 0xff 0x01 0xff 0x00
 *Khi chuyển từ điều khiển UART sang SWITCH thì trạng thái của LED sẽ luôn là 0
 *Mode Fan Speed:
     - Set mode 0: 0%
@@ -31,7 +31,42 @@ Lưu ý:
     - Set mode 2: 60%
     - Set mode 3: 90%
 
+Co nhieu truong hop xay ra trong control fan:
+Viec thuc hien chuyen mode:
+
+frame uart:
+
+Start: luoon luon la 02 (the hien cho viec nhan)
+
+ID: Day co the la che do bat/ tat Led (hien tai se chua config)
+
+Length: Config co dinh (01)
+
+Mode: 01 - UART 02 - SW
+
+Stop: Bit dung: bit nay se the hien che do mode fan speed
+
+	*Mode Fan Speed:
+    - Set mode 0: 0%
+    - Set mode 1: 30%
+    - Set mode 2: 60%
+    - Set mode 3: 90%
+
+Khi chuyen mode thi trang thi se bi reset: LED = 0
+
+Viec check:
+
+Phai check dung day UART command string, neu khong dung thi tra ve 0x02 0xff 0x01 0xff 0x00 (tra ve tren terminal)
+
+Viec chuyen che do se duoc check o bit Mode: 01, 02
+
+Chi su dung duoc 1 mode, su dung mode SW thi khong the command UART. Neu muon su dung dung sang UART thi se phai command dung
+
+
  * */
+
+
+
 
 
 #include "led.h"
@@ -41,11 +76,20 @@ Lưu ý:
 #include "delay.h"
 
 int count = 0;
-msTick = 0;
+int msTick = 0;
 
 uint8_t data = 0;
 
-int buff[20];
+uint32_t buff[LENGTH];
+
+uint8_t count_bit_0 = 0;
+
+uint8_t count_3_bit = 0;
+
+uint8_t count_mode_bit = 0;
+
+uint8_t check_length_string = 0;
+
 
 void PORTC_PORTD_IRQHandler(){
 		count++;
@@ -57,37 +101,64 @@ void SysTick_Handler(){
 	msTick++;
 }
 
+
 void UART0_IRQHandler(){
 	if((UART0->S1 & (1 << 5))){
 		buff[data]= UART0->D;
 		sendChar(buff[data]);
 		data++;
-//		delay_ms(2000);
 	}
 }
 
-void reset_count(){
-	count = 0;
-
-}
-
-void check_mode(uint8_t mode){
-	if(mode == '1'){
-		//red led on, switch mode using check count
+void Button_mode(){
+//	while(count_mode_bit != 1){
 		turn_on_red_led();
-		reset_count();
+		if(count > 3){
+			count = 0;
+		}
 		check_count(count);
-	}
-	else if(mode == '2'){
-		turn_off_red_led();
-		//using Uart mode
-	}
-
+//	}
 }
 
-void UART_mode(){
 
+void reset_buff(){
+	for(uint8_t i = 0; i < LENGTH; i++){
+			buff[i] = 0;
+	}
 }
+
+void switch_mode(){
+	if(count_mode_bit == 1){
+			check_id_bit(buff);
+	}
+	else if(count_mode_bit == 2){
+			Button_mode();
+	}
+	else{
+		return_default();
+	}
+}
+
+
+void uart_mode(){
+	check_length_string = check_length(data);
+	if(check_length_string == 1){
+		count_bit_0 = check_buff_0(buff, LENGTH);
+			if(count_bit_0 == 5){
+				count_3_bit = check_start_bit(buff);
+					if(count_3_bit == 1){
+						count_mode_bit = check_mode(buff);
+							switch_mode();
+					}
+					else{
+						return_default();
+				}
+		}
+	}
+	else{
+		return_default();
+		}
+	}
 
 int main(){
 
@@ -98,13 +169,11 @@ int main(){
 	configUART();
 
 
+
     // Kiểm tra trạng thái của đèn LED
 	while(1){
-		for(uint8_t i = 0; i< 20; i++){
-			buff[i] = 0;
-		}
 
-		check_mode(buff[10]);
+		uart_mode();
 
 	}
 }

@@ -1,1 +1,2 @@
-../source/led.c:3:6:initLed	8	static
+../source/led.c:3:6:turn_on_red_led	8	static
+../source/led.c:14:6:turn_off_red_led	8	static
